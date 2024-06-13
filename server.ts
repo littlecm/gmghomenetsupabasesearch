@@ -1,8 +1,14 @@
 import { serve } from "https://deno.land/std@0.125.0/http/server.ts";
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/+esm";
 
-const SUPABASE_URL = Deno.env.get("SUPABASE_URL") || ""; // Read Supabase URL from environment variable
-const SUPABASE_API_KEY = Deno.env.get("SUPABASE_API_KEY") || ""; // Read Supabase API key from environment variable
+// Get environment variables
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
+const SUPABASE_API_KEY = Deno.env.get("SUPABASE_API_KEY");
+
+if (!SUPABASE_URL || !SUPABASE_API_KEY) {
+  console.error("Supabase URL or API key is missing");
+  Deno.exit(1); // Exit the script with an error code
+}
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_API_KEY);
 
