@@ -13,14 +13,16 @@ if (!SUPABASE_URL || !SUPABASE_API_KEY) {
 const supabase = createClient(SUPABASE_URL, SUPABASE_API_KEY);
 
 async function handler(req: Request): Promise<Response> {
-  if (req.method === "GET") {
+  const url = new URL(req.url);
+
+  if (req.method === "GET" && url.pathname === "/") {
     const html = await Deno.readTextFile("index.html");
     return new Response(html, {
       headers: { "Content-Type": "text/html" },
     });
   }
 
-  if (req.method === "POST" && req.url === "/search") {
+  if (req.method === "POST" && url.pathname === "/search") {
     const formData = await req.formData();
     const vin = formData.get("vin")?.toString();
 
